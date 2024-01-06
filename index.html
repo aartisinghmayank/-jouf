@@ -1,0 +1,204 @@
+<html>
+  <head>
+    <title>Real Time Image Identification App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
+    <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+  <center>
+        <p>CASE STUDY BETWEEN GOOGLE LENS AND MOBILENET</p>
+        <span class="google_lens">GOOGLE LENS <img src="https://www.bing.com/th?id=Ad4c93f2425bde88c5133a1081ee67f19&w=110&h=110&c=7&rs=1&qlt=80&o=6&dpr=1.5&pid=SANGAM"></span>
+        <p>VS</p>
+        <p class="btn btn-primary" id="mobilenet">Mobilenet</p>
+        <hr>
+        <ol>
+          <div class="test_image_and_result1 col-xs-12">
+            <li class="col-sm-4 col-xs-12">
+              <b class="white1">Test Image - </b>
+              <img class="img" src="WIN_20240106_20_56_33_Pro.jpg">
+            </li>
+            <h5 class="first col-sm-4 col-xs-12">
+              Output on <b>GOOGLE LENS</b> - 
+              <span>Fuji</span>
+            </h5>
+            <h5 class="second col-sm-4 col-xs-12">
+              Output on <b>Mobilenet Model </b> - 
+              <span>Punching Bag, Punch Bag, Punching Ball, Punchball</span>
+            </h5>
+            <div class="mini_result" class="col-xs-12">
+              <h4>Result - </h4>
+              <hr>
+              <h4>GOOGLE LENS Is More Accurate</h4>
+            </div>
+          </div>
+          <div class="test_image_and_result2 col-xs-12">
+            <li class="col-sm-4 col-xs-12">
+              <b class="white2">Test Image - </b>
+              <img class="img" src="images.jpeg">
+            </li>
+            <h5 class="first col-sm-4 col-xs-12">
+              Output on <b>GOOGLE LENS</b> - 
+              <span>Strenghtening Hand Grip</span>
+            </h5>
+            <h5 class="second col-sm-4 col-xs-12">
+              Output on <b>Mobilenet Model </b> - 
+              <span>Tennis Ball</span>
+            </h5>
+            <div class="mini_result" class="col-xs-12">
+              <h4>Result - </h4>
+              <hr>
+              <h4>GOOGLE LENS Is More Accurate</h4>
+            </div>
+          </div>
+          <div class="test_image_and_result3 col-xs-12">
+            <li class="col-sm-4 col-xs-12">
+              <b class="white3">Test Image - </b>
+              <img class="img" src="download.jpeg">
+            </li>
+            <h5 class="first col-sm-4 col-xs-12">
+              Output on <b>GOOGLE LENS</b> - 
+              <span>Banana</span>
+            </h5>
+            <h5 class="second col-sm-4 col-xs-12">
+              Output on <b>Mobilenet Model </b> - 
+              <span>Banana</span>
+            </h5>
+            <div class="mini_result" class="col-xs-12">
+              <h4>Result - </h4>
+              <hr>
+              <h4>Draw</h4>
+            </div>
+          </div>
+          <div class="test_image_and_result4 col-xs-12">
+            <li class="col-sm-4 col-xs-12">
+              <b class="white4">Test Image - </b>
+              <img class="img" src="data:image/jpeg;base64,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">
+            </li>
+            <h5 class="first col-sm-4 col-xs-12">
+              Output on <b>GOOGLE LENS</b> - 
+              <span>Divo Jumbo Comb</span>
+            </h5>
+            <h5 class="second col-sm-4 col-xs-12">
+              Output on <b>Mobilenet Model </b> - 
+              <span>Microphone, Mike</span>
+            </h5>
+            <div class="mini_result" class="col-xs-12">
+              <h4>Result - </h4>
+              <hr>
+              <h4>GOOGLE LENS Is More Accurate</h4>
+            </div>
+          </div>
+          <div class="test_image_and_result5 col-xs-12">
+            <li class="col-sm-4 col-xs-12">
+              <b class="white5">Test Image - </b>
+              <img class="img" src="">
+            </li>
+            <h5 class="first col-sm-4 col-xs-12">
+              Output on <b>GOOGLE LENS</b> - 
+              <span>JBL JR300</span>
+            </h5>
+            <h5 class="second col-sm-4 col-xs-12">
+              Output on <b>Mobilenet Model </b> - 
+              <span>Muzzle</span>
+            </h5>
+            <div class="mini_result" class="col-xs-12">
+              <h4>Result - </h4>
+              <hr>
+              <h4>GOOGLE LENS Is More Accurate</h4>
+            </div>
+          </div>
+          <div class="test_image_and_result6 col-xs-12">
+            <li class="col-sm-4 col-xs-12">
+              <b class="white6">Test Image - </b>
+              <img class="img" src="data:image/jpeg;base64,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">
+            </li>
+            <h5 class="first col-sm-4 col-xs-12">
+              Output on <b>GOOGLE LENS</b> - 
+              <span>Key Chain</span>
+            </h5>
+            <h5 class="second col-sm-4 col-xs-12">
+              Output on <b>Mobilenet Model </b> - 
+              <span>Holster</span>
+            </h5>
+            <div class="mini_result" class="col-xs-12">
+              <h4>Result - </h4>
+              <hr>
+              <h4>GOOGLE LENS Is More Accurate</h4>
+            </div>
+          </div>
+          <div class="test_image_and_result7 col-xs-12">
+            <li class="col-sm-4 col-xs-12">
+              <b class="white7">Test Image - </b>
+              <img class="img" src="WIN_20240106_20_56_57_Pro.jpg">
+            </li>
+            <h5 class="first col-sm-4 col-xs-12">
+              Output on <b>GOOGLE LENS</b> - 
+              <span>KSB</span>
+            </h5>
+            <h5 class="second col-sm-4 col-xs-12">
+              Output on <b>Mobilenet Model </b> - 
+              <span>Screwdriver</span>
+            </h5>
+            <div class="mini_result" class="col-xs-12">
+              <h4>Result - </h4>
+              <hr>
+              <h4>GOOGLE LENS Is More Accurate</h4>
+            </div>
+          </div>
+          <div class="test_image_and_result8 col-xs-12">
+            <li class="col-sm-4 col-xs-12">
+              <b class="white8">Test Image - </b>
+              <img class="img" src="WIN_20240106_20_57_13_Pro.jpg">
+            </li>
+            <h5 class="first col-sm-4 col-xs-12">
+              Output on <b>GOOGLE LENS</b> - 
+              <span>Pinking Shears 7</span>
+            </h5>
+            <h5 class="second col-sm-4 col-xs-12">
+              Output on <b>Mobilenet Model </b> - 
+              <span>Vacuum, Vacuum Cleaner</span>
+            </h5>
+            <div class="mini_result" class="col-xs-12">
+              <h4>Result - </h4>
+              <hr>
+              <h4>GOOGLE LENS Is More Accurate</h4>
+            </div>
+          </div>
+          <div class="test_image_and_result9 col-xs-12">
+            <li class="col-sm-4 col-xs-12">
+              <b class="white9">Test Image - </b>
+              <img class="img" src="WIN_20240106_20_56_52_Pro.jpg">
+            </li>
+            <h5 class="first col-sm-4 col-xs-12">
+              Output on <b>GOOGLE LENS</b> - 
+              <span>Steel Dinner Spoon</span>
+            </h5>
+            <h5 class="second col-sm-4 col-xs-12">
+              Output on <b>Mobilenet Model </b> - 
+              <span>Microphone, Mike</span>
+            </h5>
+            <div class="mini_result" class="col-xs-12">
+              <h4>Result - </h4>
+              <hr>
+              <h4>GOOGLE LENS Is More Accurate</h4>
+            </div>
+          </div>
+        </ol>
+        <h6 class="bottom1">
+          I Have Tested 9 Images <b>GOOGLE LENS</b> Have Predicted 9 Of Them More Accurately And <b>MOBILE NET</b> Was Less Accurately So According To My Case Study <b>GOOGLE LENS</b> Is More Accurate.
+        </h6>
+        <br><br>
+  </center>
+  <p class="bottom">Developed by - WhitehatJR Team</p>
+  </body>
+</html>
